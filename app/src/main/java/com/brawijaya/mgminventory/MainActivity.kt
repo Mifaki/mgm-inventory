@@ -4,18 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.brawijaya.mgminventory.domain.usecase.onboarding.getOnBoardingItem
+import com.brawijaya.mgminventory.ui.components.MGMScaffold
 import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.theme.MGMInventoryTheme
 import kotlinx.coroutines.delay
@@ -36,7 +46,7 @@ class MainActivity : ComponentActivity() {
             MGMInventoryTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.White
                 ) {
                     val showOnboardingState = remember { mutableStateOf(true) }
                     val showOnboarding = showOnboardingState.value
@@ -45,15 +55,12 @@ class MainActivity : ComponentActivity() {
                         OnboardingScreen(
                             onboardingItems = getOnBoardingItem(),
                             onFinishOnboarding = {
-                                // Here you would typically save a preference
-                                // that the user has completed onboarding
+                            // TODO: STORE PREFERENCE FINISHED ON BOARDINg
                                 showOnboardingState.value = false
                             }
                         )
                     } else {
-                        Greeting(
-                            name = "Android"
-                        )
+                        HomeScreen()
                     }
                 }
             }
@@ -61,20 +68,44 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        style = MaterialTheme.typography.displayMedium,
-        modifier = modifier
-    )
+fun HomeScreen() {
+    MGMScaffold(
+        title = "Beranda",
+        showBackButton = false,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Welcome to MGM Inventory!",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
 }
 
-@Preview(showBackground = true)
+// Example of a screen with back button enabled
 @Composable
-fun GreetingPreview() {
-    MGMInventoryTheme {
-        Greeting("Android")
+fun DetailScreen(onBackPressed: () -> Unit) {
+    MGMScaffold(
+        title = "Detail",
+        showBackButton = true,
+        onBackPressed = onBackPressed
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Detail Screen Content",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
     }
 }
