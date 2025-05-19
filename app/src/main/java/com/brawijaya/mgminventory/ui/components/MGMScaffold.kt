@@ -36,6 +36,7 @@ fun MGMScaffold(
             MGMBottomBar(
                 items = getBottomBarItem(),
                 selectedItemIndex = selectedItemIndex,
+                navController = navController,
                 onItemSelected = { selectedItemIndex = it })
         }
     }) { paddingValues ->

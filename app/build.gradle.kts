@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.brawijaya.mgminventory"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.core.splashscreen)
     implementation("com.github.a914-gowtham:compose-ratingbar:1.3.12")
+    implementation(libs.coil.compose)
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

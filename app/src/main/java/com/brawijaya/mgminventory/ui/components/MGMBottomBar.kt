@@ -14,11 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.data.model.BottomNavItem
+import com.brawijaya.mgminventory.ui.navigation.Screen
 
 @Composable
 fun MGMBottomBar(
-    items: List<BottomNavItem>, selectedItemIndex: Int, onItemSelected: (Int) -> Unit
+    items: List<BottomNavItem>,
+    selectedItemIndex: Int,
+    onItemSelected: (Int) -> Unit,
+    navController: NavHostController,
 ) {
     NavigationBar(
         modifier = Modifier
@@ -30,7 +35,26 @@ fun MGMBottomBar(
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selectedItemIndex == index,
-                onClick = { onItemSelected(index) },
+                onClick = {
+                    onItemSelected(index)
+                    when (index) {
+                        0 -> navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Home.route) { inclusive = true }
+                        }
+                        1 -> navController.navigate(Screen.BorrowForm.route) {
+                            popUpTo(Screen.Home.route)
+                        }
+                        2 -> navController.navigate(Screen.ItemReturn.route) {
+                            popUpTo(Screen.Home.route)
+                        }
+                        3 -> navController.navigate(Screen.Punishment.route) {
+                            popUpTo(Screen.Home.route)
+                        }
+                        4 -> navController.navigate(Screen.Statistic.route) {
+                            popUpTo(Screen.Home.route)
+                        }
+                    }
+                },
                 icon = {
                     Icon(
                         painter = painterResource(id = item.iconResId),
