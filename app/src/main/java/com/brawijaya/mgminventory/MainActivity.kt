@@ -26,6 +26,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.brawijaya.mgminventory.domain.usecase.onboarding.getOnBoardingItem
 import com.brawijaya.mgminventory.ui.components.MGMScaffold
+import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.theme.MGMInventoryTheme
 import kotlinx.coroutines.delay
@@ -64,48 +65,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun HomeScreen() {
-    MGMScaffold(
-        title = "Beranda",
-        showBackButton = false,
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Welcome to MGM Inventory!",
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-    }
-}
-
-// Example of a screen with back button enabled
-@Composable
-fun DetailScreen(onBackPressed: () -> Unit) {
-    MGMScaffold(
-        title = "Detail",
-        showBackButton = true,
-        onBackPressed = onBackPressed
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Detail Screen Content",
-                style = MaterialTheme.typography.bodyLarge
-            )
         }
     }
 }
