@@ -18,10 +18,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.brawijaya.mgminventory.R
+import com.brawijaya.mgminventory.ui.navigation.Screen
 
 @Composable
-fun FlowSection() {
+fun FlowSection(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +50,7 @@ fun FlowSection() {
             )
 
             TextButton(
-                onClick = { /* handle click */ }
+                onClick = { navController.navigate(Screen.Borrow.route) }
             ) {
                 Text("Baca Selengkapnya")
             }

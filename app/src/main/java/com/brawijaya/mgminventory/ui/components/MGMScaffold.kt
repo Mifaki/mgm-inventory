@@ -10,15 +10,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.domain.usecase.onboarding.getBottomBarItem
 
 @Composable
 fun MGMScaffold(
     title: String,
     showBackButton: Boolean = false,
-    onBackPressed: () -> Unit = {},
     showBottomBar: Boolean = true,
-    content: @Composable () -> Unit
+    navController: NavHostController,
+    content: @Composable () -> Unit,
 ) {
 
     var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
@@ -27,7 +28,7 @@ fun MGMScaffold(
         MGMTopBar(
             title = title,
             showBackButton = showBackButton,
-            onBackPressed = onBackPressed,
+            onBackPressed = { navController.popBackStack() },
             notificationCount = 1
         )
     }, bottomBar = {
