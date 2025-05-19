@@ -24,12 +24,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.brawijaya.mgminventory.data.model.BarItem
+import com.brawijaya.mgminventory.data.model.StatItem
 import kotlin.collections.forEach
 
 @Composable
 fun BarChart(
-    values: List<BarItem>,
+    values: List<StatItem>,
     maxHeight: Dp = 120.dp
 ) {
     Card(

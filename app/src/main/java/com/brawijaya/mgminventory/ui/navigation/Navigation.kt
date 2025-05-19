@@ -8,6 +8,7 @@ import com.brawijaya.mgminventory.ui.borrow.BorrowScreen
 import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
 import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
+import com.brawijaya.mgminventory.ui.statistic.StatisticScreen
 
 
 sealed class Screen(val route: String){
@@ -15,6 +16,7 @@ sealed class Screen(val route: String){
     object Borrow: Screen("borrow")
     object ItemReturn: Screen("item_return")
     object Punishment: Screen("punishment")
+    object Statistic: Screen("statistic")
 }
 
 @Composable
@@ -37,6 +39,10 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(Screen.Punishment.route) {
             PunishmentScreen(navController = navController)
+        }
+
+        composable(Screen.Statistic.route) {
+            StatisticScreen(navController = navController)
         }
     }
 }
