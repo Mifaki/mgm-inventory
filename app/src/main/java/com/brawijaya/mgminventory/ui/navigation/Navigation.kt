@@ -7,12 +7,14 @@ import androidx.navigation.compose.composable
 import com.brawijaya.mgminventory.ui.borrow.BorrowScreen
 import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
+import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
 
 
 sealed class Screen(val route: String){
     object Home : Screen("home")
     object Borrow: Screen("borrow")
     object ItemReturn: Screen("item_return")
+    object Punishment: Screen("punishment")
 }
 
 @Composable
@@ -31,6 +33,10 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(Screen.ItemReturn.route) {
             ItemReturnScreen(navController = navController)
+        }
+
+        composable(Screen.Punishment.route) {
+            PunishmentScreen(navController = navController)
         }
     }
 }
