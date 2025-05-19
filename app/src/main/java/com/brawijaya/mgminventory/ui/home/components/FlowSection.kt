@@ -78,7 +78,7 @@ fun FlowSection(navController: NavController) {
             )
 
             TextButton(
-                onClick = { /* handle click */ }
+                onClick ={ navController.navigate(Screen.ItemReturn.route) }
             ) {
                 Text("Baca Selengkapnya")
             }
