@@ -13,6 +13,7 @@ import com.brawijaya.mgminventory.ui.calender.CalendarScreen
 import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
 import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
+import com.brawijaya.mgminventory.ui.returnForm.ReturnFormScreen
 import com.brawijaya.mgminventory.ui.statistic.StatisticScreen
 import java.time.LocalDate
 
@@ -23,6 +24,7 @@ sealed class Screen(val route: String) {
     object Punishment : Screen("punishment")
     object Statistic : Screen("statistic")
     object BorrowForm : Screen("borrow_form")
+    object ReturnForm: Screen("return_form")
 
     object Calendar : Screen("calendar/{title}/{dateType}") {
         fun createRoute(title: String, dateType: String): String {
@@ -35,10 +37,9 @@ sealed class Screen(val route: String) {
 fun AppNavigation(navController: NavHostController) {
     // Shared date selection callback for the Calendar screen
     val onDateSelected = remember<(String, String) -> Unit> { { date, dateType ->
-        // Navigate back after selection with the selected date
         navController.previousBackStackEntry?.savedStateHandle?.set("selected_date", date)
         navController.previousBackStackEntry?.savedStateHandle?.set("date_type", dateType)
-        navController.navigateUp() // Use navigateUp instead of popBackStack to preserve navigation state
+        navController.navigateUp()
     }}
 
 
@@ -68,6 +69,10 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(Screen.BorrowForm.route) {
             BorrowFormScreen(navController = navController)
+        }
+
+        composable(Screen.ReturnForm.route) {
+            ReturnFormScreen(navController = navController)
         }
 
         composable(
