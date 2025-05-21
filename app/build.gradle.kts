@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation("com.github.a914-gowtham:compose-ratingbar:1.3.12")
     implementation(libs.coil.compose)
+    implementation(libs.accompanist.permissions)
     implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

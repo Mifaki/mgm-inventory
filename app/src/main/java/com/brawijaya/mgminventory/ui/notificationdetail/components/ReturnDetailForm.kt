@@ -50,6 +50,7 @@ fun ReturnDetailForm(navController: NavHostController, notificationId: String) {
     MGMScaffold(
         title = "Detail Notifikasi",
         showBackButton = true,
+        showBottomBar = false,
         navController = navController
     ) {
         Column(

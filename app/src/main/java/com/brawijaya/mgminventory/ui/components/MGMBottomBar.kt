@@ -47,10 +47,7 @@ fun MGMBottomBar(
                         2 -> navController.navigate(Screen.ReturnForm.route) {
                             popUpTo(Screen.Home.route)
                         }
-                        3 -> navController.navigate(Screen.Punishment.route) {
-                            popUpTo(Screen.Home.route)
-                        }
-                        4 -> navController.navigate(Screen.Statistic.route) {
+                        3 -> navController.navigate(Screen.Profile.route) {
                             popUpTo(Screen.Home.route)
                         }
                     }

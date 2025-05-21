@@ -40,6 +40,7 @@ fun AnnouncementDetailForm(navController: NavHostController, notificationId: Str
     MGMScaffold(
         title = "Detail Notifikasi",
         showBackButton = true,
+        showBottomBar = false,
         navController = navController
     ) {
         Column(
