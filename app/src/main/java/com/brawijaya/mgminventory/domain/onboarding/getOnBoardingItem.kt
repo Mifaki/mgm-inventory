@@ -1,4 +1,4 @@
-package com.brawijaya.mgminventory.domain.usecase.onboarding
+package com.brawijaya.mgminventory.domain.onboarding
 
 import com.brawijaya.mgminventory.R
 import com.brawijaya.mgminventory.data.model.OnboardingItem

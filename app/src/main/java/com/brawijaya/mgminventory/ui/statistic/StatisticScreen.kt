@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.brawijaya.mgminventory.domain.usecase.onboarding.getStatItem
+import com.brawijaya.mgminventory.domain.statistic.getStatItem
 import com.brawijaya.mgminventory.ui.components.BarChart
 import com.brawijaya.mgminventory.ui.components.MGMScaffold
 import com.brawijaya.mgminventory.ui.components.MonthSelector

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.brawijaya.mgminventory.domain.usecase.onboarding.getStatItem
+import com.brawijaya.mgminventory.domain.statistic.getStatItem
 import com.brawijaya.mgminventory.ui.components.BarChart
 import com.brawijaya.mgminventory.ui.components.MonthSelector
 import com.brawijaya.mgminventory.ui.navigation.Screen

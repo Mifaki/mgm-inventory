@@ -1,4 +1,4 @@
-package com.brawijaya.mgminventory.domain.usecase.onboarding
+package com.brawijaya.mgminventory.domain.statistic
 
 import com.brawijaya.mgminventory.data.model.StatItem
 

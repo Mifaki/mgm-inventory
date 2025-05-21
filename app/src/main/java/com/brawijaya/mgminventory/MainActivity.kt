@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.brawijaya.mgminventory.domain.usecase.onboarding.getOnBoardingItem
+import com.brawijaya.mgminventory.domain.onboarding.getOnBoardingItem
 import com.brawijaya.mgminventory.ui.navigation.AppNavigation
 import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.theme.MGMInventoryTheme
