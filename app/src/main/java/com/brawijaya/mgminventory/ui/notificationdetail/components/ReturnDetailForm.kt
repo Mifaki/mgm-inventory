@@ -33,6 +33,7 @@ import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.R
 import com.brawijaya.mgminventory.data.model.ReturnNotificationDetail
 import com.brawijaya.mgminventory.ui.components.MGMScaffold
+import com.brawijaya.mgminventory.ui.components.ReadOnlyTextField
 
 @Composable
 fun ReturnDetailForm(navController: NavHostController, notificationId: String) {
@@ -103,83 +104,66 @@ fun ReturnDetailForm(navController: NavHostController, notificationId: String) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            DataField(label = "Tanggal Peminjaman", value = returnData.borrowDate)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            DataField(label = "Tanggal Pengembalian", value = returnData.returnDate)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            DataField(label = "Alat yang Dikembalikan", value = returnData.item)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Foto Bukti Alat Dikembalikan",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.padding(horizontal = 16.dp)
+            ReadOnlyTextField(
+                label = "Tanggal Peminjaman",
+                value = returnData.borrowDate
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Box(
+            ReadOnlyTextField(
+                label = "Tanggal Pengembalian",
+                value = returnData.returnDate
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            ReadOnlyTextField(
+                label = "Alat yang Dikembalikan",
+                value = returnData.item
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .height(200.dp)
-                    .border(
-                        width = 1.dp,
-                        color = Color.Gray,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clip(RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.Center
+                    .padding(horizontal = 24.dp)
             ) {
+                Text(
+                    text = "Foto Bukti Alat Dikembalikan",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
                 Box(
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .border(
+                            width = 1.dp,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.cato),
-                        contentDescription = "Proof Image",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    Box(
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.cato),
+                            contentDescription = "Proof Image",
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
         }
-    }
-}
-
-
-@Composable
-fun DataField(label: String, value: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Text(
-            text = label,
-            fontSize = 14.sp,
-            color = Color.DarkGray
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        OutlinedTextField(
-            value = value,
-            onValueChange = { },
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = Color(0xFFDDDDDD),
-                unfocusedContainerColor = Color.White
-            )
-        )
     }
 }

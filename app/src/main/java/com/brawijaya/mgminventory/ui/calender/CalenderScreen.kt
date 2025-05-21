@@ -38,6 +38,7 @@ fun CalendarScreen(
     MGMScaffold(
         title = title,
         showBackButton = true,
+        showBottomBar = false,
         navController = navController
     ) {
         Column(
