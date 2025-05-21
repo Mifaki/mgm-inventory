@@ -12,6 +12,8 @@ import com.brawijaya.mgminventory.ui.borrowform.BorrowFormScreen
 import com.brawijaya.mgminventory.ui.calender.CalendarScreen
 import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
+import com.brawijaya.mgminventory.ui.notification.NotificationScreen
+import com.brawijaya.mgminventory.ui.notificationdetail.NotificationDetailScreen
 import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
 import com.brawijaya.mgminventory.ui.returnForm.ReturnFormScreen
 import com.brawijaya.mgminventory.ui.statistic.StatisticScreen
@@ -25,6 +27,12 @@ sealed class Screen(val route: String) {
     object Statistic : Screen("statistic")
     object BorrowForm : Screen("borrow_form")
     object ReturnForm: Screen("return_form")
+    object Notification: Screen("notification")
+    object NotificationDetail: Screen("notification_detail/{type}/{id}") {
+        fun createRoute(type: String, id: String): String {
+            return "notification_detail/$type/$id"
+        }
+    }
 
     object Calendar : Screen("calendar/{title}/{dateType}") {
         fun createRoute(title: String, dateType: String): String {
@@ -73,6 +81,27 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(Screen.ReturnForm.route) {
             ReturnFormScreen(navController = navController)
+        }
+
+        composable(Screen.Notification.route) {
+            NotificationScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.NotificationDetail.route,
+            arguments = listOf(
+                navArgument("type") { type = NavType.StringType },
+                navArgument("id") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type") ?: "return"
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+
+            NotificationDetailScreen(
+                navController = navController,
+                notificationType = type,
+                notificationId = id
+            )
         }
 
         composable(

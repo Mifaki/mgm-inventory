@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +38,7 @@ fun MGMTopBar(
     showBackButton: Boolean = false,
     onBackPressed: () -> Unit = {},
     notificationCount: Int = 0,
-    onNotificationPressed: () -> Unit = {}
+    onNotificationPressed: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier

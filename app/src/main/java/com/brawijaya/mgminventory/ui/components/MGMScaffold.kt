@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.domain.usecase.onboarding.getBottomBarItem
+import com.brawijaya.mgminventory.ui.navigation.Screen
 
 @Composable
 fun MGMScaffold(
@@ -29,7 +30,8 @@ fun MGMScaffold(
             title = title,
             showBackButton = showBackButton,
             onBackPressed = { navController.popBackStack() },
-            notificationCount = 1
+            onNotificationPressed = { navController.navigate(Screen.Notification.route)},
+            notificationCount = 1,
         )
     }, bottomBar = {
         if (showBottomBar) {
