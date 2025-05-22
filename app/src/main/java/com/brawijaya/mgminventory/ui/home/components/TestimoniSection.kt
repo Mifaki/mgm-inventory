@@ -17,10 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.ui.components.RatingDisplay
+import com.brawijaya.mgminventory.ui.navigation.Screen
 
 @Composable
-fun TestimoniSection() {
+fun TestimoniSection(
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +44,9 @@ fun TestimoniSection() {
             )
 
             TextButton(
-                onClick = { }
+                onClick = {
+                    navController.navigate(Screen.Testimony.route)
+                }
             ) {
                 Text("Baca Selengkapnya")
             }

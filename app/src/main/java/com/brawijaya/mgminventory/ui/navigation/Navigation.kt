@@ -19,6 +19,7 @@ import com.brawijaya.mgminventory.ui.profiledetail.ProfileDetailScreen
 import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
 import com.brawijaya.mgminventory.ui.returnForm.ReturnFormScreen
 import com.brawijaya.mgminventory.ui.statistic.StatisticScreen
+import com.brawijaya.mgminventory.ui.testimony.TestimonyScreen
 import java.time.LocalDate
 
 sealed class Screen(val route: String) {
@@ -32,6 +33,7 @@ sealed class Screen(val route: String) {
     object Notification: Screen("notification")
     object Profile: Screen("profile")
     object ProfileDetail: Screen("profile_detail")
+    object Testimony: Screen("testimony")
 
     object NotificationDetail: Screen("notification_detail/{type}/{id}") {
         fun createRoute(type: String, id: String): String {
@@ -98,6 +100,10 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(Screen.ProfileDetail.route) {
             ProfileDetailScreen(navController = navController)
+        }
+
+        composable(Screen.Testimony.route) {
+            TestimonyScreen(navController = navController)
         }
 
         composable(

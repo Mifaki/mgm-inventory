@@ -31,7 +31,7 @@ fun HomeScreen(navController: NavHostController) {
             DataStatistikSection(navController)
             FlowSection(navController)
             PunishmentSection(navController)
-            TestimoniSection()
+            TestimoniSection(navController)
         }
     }
 }
