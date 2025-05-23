@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.brawijaya.mgminventory.domain.onboarding.getOnBoardingItem
 import com.brawijaya.mgminventory.ui.navigation.AppNavigation
+import com.brawijaya.mgminventory.ui.navigation.Screen
 import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.theme.MGMInventoryTheme
 import kotlinx.coroutines.delay
@@ -40,17 +41,20 @@ class MainActivity : ComponentActivity() {
                     val showOnboardingState = remember { mutableStateOf(true) }
                     val showOnboarding = showOnboardingState.value
 
+                    val navController = rememberNavController()
+                    AppNavigation(navController = navController)
+
                     if (showOnboarding) {
                         OnboardingScreen(
                             onboardingItems = getOnBoardingItem(),
                             onFinishOnboarding = {
-                            // TODO: STORE PREFERENCE FINISHED ON BOARDINg
                                 showOnboardingState.value = false
-                            }
+                            },
+                            onLoginClicked = {
+                                navController.navigate(Screen.Login.route)
+                            },
+                            navController = navController
                         )
-                    } else {
-                        val navController = rememberNavController()
-                        AppNavigation(navController = navController)
                     }
                 }
             }

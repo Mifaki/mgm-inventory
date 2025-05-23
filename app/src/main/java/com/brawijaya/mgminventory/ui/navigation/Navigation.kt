@@ -12,6 +12,7 @@ import com.brawijaya.mgminventory.ui.borrowform.BorrowFormScreen
 import com.brawijaya.mgminventory.ui.calender.CalendarScreen
 import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
+import com.brawijaya.mgminventory.ui.login.LoginScreen
 import com.brawijaya.mgminventory.ui.notification.NotificationScreen
 import com.brawijaya.mgminventory.ui.notificationdetail.NotificationDetailScreen
 import com.brawijaya.mgminventory.ui.profile.ProfileScreen
@@ -34,6 +35,7 @@ sealed class Screen(val route: String) {
     object Profile: Screen("profile")
     object ProfileDetail: Screen("profile_detail")
     object Testimony: Screen("testimony")
+    object Login: Screen("login")
 
     object NotificationDetail: Screen("notification_detail/{type}/{id}") {
         fun createRoute(type: String, id: String): String {
@@ -104,6 +106,10 @@ fun AppNavigation(navController: NavHostController) {
 
         composable(Screen.Testimony.route) {
             TestimonyScreen(navController = navController)
+        }
+
+        composable(Screen.Login.route) {
+            LoginScreen(navController = navController)
         }
 
         composable(

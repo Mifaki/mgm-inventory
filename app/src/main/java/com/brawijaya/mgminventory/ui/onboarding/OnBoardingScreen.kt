@@ -34,7 +34,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.data.model.OnboardingItem
+import com.brawijaya.mgminventory.ui.navigation.Screen
 import com.brawijaya.mgminventory.ui.onboarding.components.OnboardingPage
 import kotlinx.coroutines.launch
 
@@ -42,7 +45,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(
     onboardingItems: List<OnboardingItem>,
-    onFinishOnboarding: () -> Unit
+    onFinishOnboarding: () -> Unit,
+    onLoginClicked: () -> Unit,
+    navController: NavHostController
 ) {
     val pagerState = rememberPagerState(pageCount = { onboardingItems.size })
     val coroutineScope = rememberCoroutineScope()
@@ -128,7 +133,9 @@ fun OnboardingScreen(
                         .padding(horizontal = 24.dp)
                 ) {
                     Button(
-                        onClick = { onFinishOnboarding() },
+                        onClick = {
+                            onFinishOnboarding()
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(48.dp),
@@ -146,7 +153,9 @@ fun OnboardingScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     OutlinedButton(
-                        onClick = { onFinishOnboarding() },
+                        onClick = {
+                            onLoginClicked()
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(48.dp),
