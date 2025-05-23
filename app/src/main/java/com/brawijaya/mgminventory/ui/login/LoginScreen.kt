@@ -18,6 +18,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +45,15 @@ import com.brawijaya.mgminventory.ui.login.components.LoginForm
 fun LoginScreen(
     navController: NavHostController
 ) {
+    var email by remember {
+        mutableStateOf("")
+    };
+    var password by remember {
+        mutableStateOf("")
+    };
+
+    var isFilled = email.isNotEmpty() && password.isNotEmpty();
+
     Column(
         Modifier
             .fillMaxSize()
@@ -86,7 +99,12 @@ fun LoginScreen(
                 )
             }
 
-            LoginForm()
+            LoginForm(
+                email = email,
+                password = password,
+                onEmailChange = { email = it },
+                onPasswordChange = { password = it }
+            )
 
             Button(
                 onClick = {
@@ -98,7 +116,8 @@ fun LoginScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Gray,
                     contentColor = Color.White
-                )
+                ),
+                enabled = isFilled
             ) {
                 Text(
                     "Masuk"
@@ -114,7 +133,10 @@ fun LoginScreen(
                         .weight(1f)
                         .height(1.dp)
                 )
-                Text("atau")
+                Text(
+                    "atau",
+                    fontSize = 14.sp
+                )
                 HorizontalDivider(
                     modifier = Modifier
                         .weight(1f)
@@ -158,13 +180,13 @@ fun LoginScreen(
                 Text(
                     "Sudah memiliki akun?",
                     style = TextStyle(
-                        fontSize = 12.sp
+                        fontSize = 14.sp
                     )
                 )
                 Text(
                     "Masuk",
                     style = TextStyle(
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                     ),
                     modifier = Modifier.clickable {  }
@@ -172,7 +194,8 @@ fun LoginScreen(
             }
             Text(
                 "Lupa Password",
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
+                fontSize = 14.sp
             )
         }
     }

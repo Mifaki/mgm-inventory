@@ -3,6 +3,7 @@ package com.brawijaya.mgminventory.ui.login.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,116 +18,49 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brawijaya.mgminventory.R
+import com.brawijaya.mgminventory.ui.components.LabeledTextField
 
-@Preview(showBackground = true)
 @Composable
-fun LoginForm() {
+fun LoginForm(
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit
+) {
     Column(
-        Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Column (
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                "Email",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-            Row(
-                Modifier
-                    .height(52.dp)
-                    .fillMaxWidth()
-                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-                    .background(Color.Transparent, RoundedCornerShape(8.dp))
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(
-                    Modifier.weight(1f),
-                    contentAlignment = Alignment.CenterStart,
-                ) {
-                    BasicTextField(
-                        value = "",
-                        onValueChange = {
-                        },
-                        textStyle = TextStyle(
-                            fontSize = 14.sp,
-                            color = Color.Black
-                        ),
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Masukkan emailmu...",
-                        style = TextStyle(fontSize = 14.sp, color = Color.Gray),
-                        modifier = Modifier.align(Alignment.CenterStart)
-                    )
-                }
-                Image(
-                    painter = painterResource(R.drawable.eraser_icon),
-                    contentDescription = "Eraser Icon",
-                    Modifier.size(20.dp)
-                )
-            }
-        }
-        Column (
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                "Kata Sandi",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-            Row(
-                Modifier
-                    .height(52.dp)
-                    .fillMaxWidth()
-                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-                    .background(Color.Transparent, RoundedCornerShape(8.dp))
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(
-                    Modifier.weight(1f),
-                    contentAlignment = Alignment.CenterStart,
-                ) {
-                    BasicTextField(
-                        value = "",
-                        onValueChange = {
-                        },
-                        textStyle = TextStyle(
-                            fontSize = 14.sp,
-                            color = Color.Black
-                        ),
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Masukkan kata sandimu...",
-                        style = TextStyle(fontSize = 14.sp, color = Color.Gray),
-                        modifier = Modifier.align(Alignment.CenterStart)
-                    )
-                }
-                Image(
-                    painter = painterResource(R.drawable.eraser_icon),
-                    contentDescription = "Eraser Icon",
-                    Modifier.size(20.dp)
-                )
-            }
-        }
+        LabeledTextField(
+            label = "Email",
+            value = email,
+            onValueChange = onEmailChange,
+            placeholder = "Masukkan emailmu...",
+            onClear = { onEmailChange("") },
+        )
+
+        LabeledTextField(
+            label = "Kata Sandi",
+            value = password,
+            onValueChange = onPasswordChange,
+            placeholder = "Masukkan kata sandimu...",
+            onClear = { onPasswordChange("") },
+            isPassword = true
+        )
     }
 }
