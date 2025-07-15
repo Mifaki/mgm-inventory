@@ -9,9 +9,13 @@ import androidx.compose.ui.unit.dp
 import com.brawijaya.mgminventory.ui.components.LabeledTextField
 
 @Composable
-fun LoginForm(
+fun RegisterForm(
+    name: String,
+    onNameChange: (String) -> Unit,
     email: String,
     onEmailChange: (String) -> Unit,
+    nim: String,
+    onNimChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit
 ) {
@@ -20,18 +24,34 @@ fun LoginForm(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         LabeledTextField(
-            label = "NIM",
+            label = "Nama",
+            value = name,
+            onValueChange = onNameChange,
+            placeholder = "Masukan Nama",
+            onClear = { onNameChange("") },
+        )
+
+        LabeledTextField(
+            label = "Email",
             value = email,
             onValueChange = onEmailChange,
-            placeholder = "Masukkan NIM-mu...",
+            placeholder = "Masukan Email",
             onClear = { onEmailChange("") },
         )
 
         LabeledTextField(
-            label = "Kata Sandi",
+            label = "NIM",
+            value = nim,
+            onValueChange = onNimChange,
+            placeholder = "Masukkan NIM",
+            onClear = { onNimChange("") },
+        )
+
+        LabeledTextField(
+            label = "Password",
             value = password,
             onValueChange = onPasswordChange,
-            placeholder = "Masukkan kata sandimu...",
+            placeholder = "Masukan Password",
             onClear = { onPasswordChange("") },
             isPassword = true
         )

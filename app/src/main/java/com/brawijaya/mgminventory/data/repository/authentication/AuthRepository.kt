@@ -1,8 +1,10 @@
 package com.brawijaya.mgminventory.data.repository.authentication
 
 import android.media.session.MediaSession.Token
+import android.util.Log
+import com.brawijaya.mgminventory.data.service.auth.dto.AuthUserResponse
 import com.brawijaya.mgminventory.data.service.auth.dto.LoginRequest
-import com.brawijaya.mgminventory.data.service.auth.dto.UserLoginResponse
+import com.brawijaya.mgminventory.data.service.auth.dto.RegisterRequest
 import com.brawijaya.mgminventory.data.service.auth.local.TokenStorage
 import com.brawijaya.mgminventory.data.service.auth.remote.AuthApi
 import com.brawijaya.mgminventory.domain.model.user.User
@@ -13,6 +15,13 @@ import javax.inject.Inject
 
 interface AuthRepository {
     suspend fun login(
+        nim: String,
+        password: String
+    ): Flow<Resource<User>>
+
+    suspend fun register(
+        name: String,
+        email: String,
         nim: String,
         password: String
     ): Flow<Resource<User>>
@@ -40,7 +49,28 @@ class AuthRepositoryImplementation @Inject constructor(
         }
     }
 
-    private fun UserLoginResponse.toDomain(): User {
+    override suspend fun register(
+        name: String,
+        email: String,
+        nim: String,
+        password: String
+    ): Flow<Resource<User>> = flow {
+        emit(Resource.Loading)
+
+        try {
+            val response = _api.register(RegisterRequest(
+                name, email, nim, password
+            ))
+            Log.i("Register", response.toString())
+
+            emit(Resource.Success(response.data.toDomain()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toString() ?: "Register: Something Went Wrong"))
+            Log.e("Register", e.toString())
+        }
+    }
+
+    private fun AuthUserResponse.toDomain(): User {
         return User(
             id = id.toString(),
             name = name,

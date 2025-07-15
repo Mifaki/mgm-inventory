@@ -1,4 +1,4 @@
-package com.brawijaya.mgminventory.ui.login
+package com.brawijaya.mgminventory.ui.register
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,25 +37,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.R
-import com.brawijaya.mgminventory.ui.login.components.LoginForm
+import com.brawijaya.mgminventory.ui.login.components.RegisterForm
 import com.brawijaya.mgminventory.ui.navigation.Screen
 import com.brawijaya.mgminventory.utlis.Resource
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     navController: NavHostController,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
-    val loginState by viewModel.loginState.collectAsState()
+    val registerState by viewModel.registerState.collectAsState()
 
+    var name by remember {
+        mutableStateOf("")
+    };
+    var nim by remember {
+        mutableStateOf("")
+    };
     var email by remember {
         mutableStateOf("")
     };
@@ -105,23 +107,27 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    "Masuk ke MGM",
+                    "Daftar keanggotaan MGM",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left
                 )
             }
 
-            LoginForm(
+            RegisterForm (
+                name = name,
                 email = email,
+                nim = nim,
                 password = password,
+                onNameChange = { name = it },
                 onEmailChange = { email = it },
+                onNimChange = { nim = it },
                 onPasswordChange = { password = it }
             )
 
             Button(
                 onClick = {
-                    viewModel.login(email, password)
+                    viewModel.register(name, email, nim, password)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -133,7 +139,7 @@ fun LoginScreen(
                 ),
                 enabled = isFilled
             ) {
-                when (loginState) {
+                when (registerState) {
                     is Resource.Loading -> {
                         CircularProgressIndicator(
                             color = Color.White,
@@ -144,7 +150,7 @@ fun LoginScreen(
                     }
 
                     else -> {
-                        Text("Login")
+                        Text("Daftar")
                     }
                 }
             }
@@ -168,54 +174,45 @@ fun LoginScreen(
                         .height(1.dp)
                 )
             }
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 Text(
-                    "Belum memiliki akun?",
+                    "Sudah memiliki akun?",
                     style = TextStyle(
                         fontSize = 14.sp
                     )
                 )
                 Text(
-                    "Daftar",
+                    "Masuk",
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                     ),
                     modifier = Modifier.clickable {
-                        navController.navigate(Screen.Register.route)
+                        navController.navigate(Screen.Login.route) {}
                     }
                 )
             }
-            Text(
-                "Lupa Password",
-                textDecoration = TextDecoration.Underline,
-                fontSize = 14.sp
-            )
-        }
 
-        when (loginState) {
-            is Resource.Success -> {
-                LaunchedEffect(Unit) {
-                    Toast.makeText(context, "Login Success", Toast.LENGTH_LONG).show()
-
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) {
-                            inclusive = true
-                        }
+            when (registerState) {
+                is Resource.Success -> {
+                    LaunchedEffect(Unit) {
+                        Toast.makeText(context, "Register Success", Toast.LENGTH_LONG).show()
+                        navController.navigate(Screen.Login.route)
                     }
                 }
-            }
 
-            is Resource.Error -> {
-                val message = (loginState as Resource.Error).message
-                LaunchedEffect(message) {
-                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                is Resource.Error -> {
+                    val message = (registerState as Resource.Error).message
+                    LaunchedEffect(message) {
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                else -> {
                 }
             }
-
-            else -> {}
         }
     }
 }

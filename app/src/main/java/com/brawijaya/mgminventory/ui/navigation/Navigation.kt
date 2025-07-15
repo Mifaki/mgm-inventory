@@ -20,6 +20,7 @@ import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.profile.ProfileScreen
 import com.brawijaya.mgminventory.ui.profiledetail.ProfileDetailScreen
 import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
+import com.brawijaya.mgminventory.ui.register.RegisterScreen
 import com.brawijaya.mgminventory.ui.returnForm.ReturnFormScreen
 import com.brawijaya.mgminventory.ui.statistic.StatisticScreen
 import com.brawijaya.mgminventory.ui.testimony.TestimonyScreen
@@ -38,6 +39,7 @@ sealed class Screen(val route: String) {
     object ProfileDetail: Screen("profile_detail")
     object Testimony: Screen("testimony")
     object Login: Screen("login")
+    object Register: Screen("register")
     object Onboarding: Screen("onboarding")
 
     object NotificationDetail: Screen("notification_detail/{type}/{id}") {
@@ -71,7 +73,7 @@ fun AppNavigation(navController: NavHostController, startDestination: String = S
             OnboardingScreen(
                 onboardingItems = getOnBoardingItem(),
                 onFinishOnboarding = {
-//                    navController.navigate(Screen.Register.route)
+                    navController.navigate(Screen.Register.route)
                 },
                 onLoginClicked = {
                     navController.navigate(Screen.Login.route)
@@ -126,6 +128,10 @@ fun AppNavigation(navController: NavHostController, startDestination: String = S
 
         composable(Screen.Login.route) {
             LoginScreen(navController = navController)
+        }
+
+        composable(Screen.Register.route) {
+            RegisterScreen(navController = navController)
         }
 
         composable(
