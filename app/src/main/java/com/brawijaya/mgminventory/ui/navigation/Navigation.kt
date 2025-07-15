@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.brawijaya.mgminventory.domain.onboarding.getOnBoardingItem
 import com.brawijaya.mgminventory.ui.borrow.BorrowScreen
 import com.brawijaya.mgminventory.ui.borrowform.BorrowFormScreen
 import com.brawijaya.mgminventory.ui.calender.CalendarScreen
@@ -15,6 +16,7 @@ import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
 import com.brawijaya.mgminventory.ui.login.LoginScreen
 import com.brawijaya.mgminventory.ui.notification.NotificationScreen
 import com.brawijaya.mgminventory.ui.notificationdetail.NotificationDetailScreen
+import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.profile.ProfileScreen
 import com.brawijaya.mgminventory.ui.profiledetail.ProfileDetailScreen
 import com.brawijaya.mgminventory.ui.punishment.PunishmentScreen
@@ -36,6 +38,7 @@ sealed class Screen(val route: String) {
     object ProfileDetail: Screen("profile_detail")
     object Testimony: Screen("testimony")
     object Login: Screen("login")
+    object Onboarding: Screen("onboarding")
 
     object NotificationDetail: Screen("notification_detail/{type}/{id}") {
         fun createRoute(type: String, id: String): String {
@@ -51,7 +54,7 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(navController: NavHostController, startDestination: String = Screen.Home.route) {
     // Shared date selection callback for the Calendar screen
     val onDateSelected = remember<(String, String) -> Unit> { { date, dateType ->
         navController.previousBackStackEntry?.savedStateHandle?.set("selected_date", date)
@@ -62,8 +65,21 @@ fun AppNavigation(navController: NavHostController) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = startDestination
     ) {
+        composable(Screen.Onboarding.route) {
+            OnboardingScreen(
+                onboardingItems = getOnBoardingItem(),
+                onFinishOnboarding = {
+//                    navController.navigate(Screen.Register.route)
+                },
+                onLoginClicked = {
+                    navController.navigate(Screen.Login.route)
+                },
+                navController = navController
+            )
+        }
+
         composable(Screen.Home.route) {
             HomeScreen(navController = navController)
         }

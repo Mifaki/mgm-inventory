@@ -1,6 +1,7 @@
 package com.brawijaya.mgminventory.data.service.auth.local
 
 import android.content.Context
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import javax.inject.Inject
@@ -23,14 +24,16 @@ class TokenStorage @Inject constructor(
             .putString("access_token", access)
             .putString("refresh_token", refresh)
             .apply()
+
+        Log.d("TokenStorage", "Token saved: $access")
     }
 
-    fun getAccessToken() {
-        prefs.getString("access_token", null)
+    fun getAccessToken(): String? {
+        return prefs.getString("access_token", null)
     }
 
-    fun getRefreshToken() {
-        prefs.getString("refresh_token", null)
+    fun getRefreshToken(): String? {
+        return prefs.getString("refresh_token", null)
     }
 
     fun clearToken() {

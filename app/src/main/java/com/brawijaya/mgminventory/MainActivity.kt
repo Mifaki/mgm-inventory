@@ -1,6 +1,7 @@
 package com.brawijaya.mgminventory
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.brawijaya.mgminventory.data.service.auth.local.TokenStorage
 import com.brawijaya.mgminventory.domain.onboarding.getOnBoardingItem
 import com.brawijaya.mgminventory.ui.navigation.AppNavigation
 import com.brawijaya.mgminventory.ui.navigation.Screen
@@ -22,44 +24,45 @@ import com.brawijaya.mgminventory.ui.theme.MGMInventoryTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var tokenStorage: TokenStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashscreen = installSplashScreen()
         var keepSplashScreen = true
         super.onCreate(savedInstanceState)
+
         splashscreen.setKeepOnScreenCondition { keepSplashScreen }
+
         lifecycleScope.launch {
             delay(3000)
             keepSplashScreen = false
         }
+
         enableEdgeToEdge()
+
         setContent {
             MGMInventoryTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Color.White
                 ) {
-                    val showOnboardingState = remember { mutableStateOf(true) }
-                    val showOnboarding = showOnboardingState.value
-
                     val navController = rememberNavController()
-                    AppNavigation(navController = navController)
-
-                    if (showOnboarding) {
-                        OnboardingScreen(
-                            onboardingItems = getOnBoardingItem(),
-                            onFinishOnboarding = {
-                                showOnboardingState.value = false
-                            },
-                            onLoginClicked = {
-                                navController.navigate(Screen.Login.route)
-                                showOnboardingState.value = false
-                            },
-                            navController = navController
-                        )
+                    val showOnboardingState = remember {
+                        mutableStateOf(tokenStorage.getAccessToken().isNullOrBlank())
                     }
+
+                    AppNavigation(
+                        navController = navController, startDestination = (
+                                if (showOnboardingState.value) Screen.Onboarding.route
+                                else Screen.Home.route
+                                )
+                    )
                 }
             }
         }
