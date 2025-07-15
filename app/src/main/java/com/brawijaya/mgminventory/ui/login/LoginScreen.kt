@@ -1,5 +1,6 @@
 package com.brawijaya.mgminventory.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,12 +13,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -36,15 +42,20 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.R
 import com.brawijaya.mgminventory.ui.login.components.LoginForm
+import com.brawijaya.mgminventory.utlis.Resource
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
+    val loginState by viewModel.loginState.collectAsState()
+
     var email by remember {
         mutableStateOf("")
     };
@@ -52,7 +63,8 @@ fun LoginScreen(
         mutableStateOf("")
     };
 
-    var isFilled = email.isNotEmpty() && password.isNotEmpty();
+    val isFilled = email.isNotEmpty() && password.isNotEmpty();
+    val context = LocalContext.current
 
     Column(
         Modifier
@@ -108,6 +120,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
+                    viewModel.login(email, password)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,9 +132,20 @@ fun LoginScreen(
                 ),
                 enabled = isFilled
             ) {
-                Text(
-                    "Masuk"
-                )
+                when (loginState) {
+                    is Resource.Loading -> {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            strokeWidth = 2.dp,
+                            modifier = Modifier
+                                .size(22.dp)
+                        )
+                    }
+
+                    else -> {
+                        Text("Login")
+                    }
+                }
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -145,6 +169,7 @@ fun LoginScreen(
             }
             Button(
                 onClick = {
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -197,6 +222,23 @@ fun LoginScreen(
                 textDecoration = TextDecoration.Underline,
                 fontSize = 14.sp
             )
+        }
+
+        when (loginState) {
+            is Resource.Success -> {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(context, "Login Success", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            is Resource.Error -> {
+                val message = (loginState as Resource.Error).message
+                LaunchedEffect(message) {
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                }
+            }
+
+            else -> {}
         }
     }
 }

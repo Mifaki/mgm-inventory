@@ -47,10 +47,10 @@ fun LoginForm(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         LabeledTextField(
-            label = "Email",
+            label = "NIM",
             value = email,
             onValueChange = onEmailChange,
-            placeholder = "Masukkan emailmu...",
+            placeholder = "Masukkan NIM-mu...",
             onClear = { onEmailChange("") },
         )
 

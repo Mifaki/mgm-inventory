@@ -19,9 +19,11 @@ import com.brawijaya.mgminventory.ui.navigation.AppNavigation
 import com.brawijaya.mgminventory.ui.navigation.Screen
 import com.brawijaya.mgminventory.ui.onboarding.OnboardingScreen
 import com.brawijaya.mgminventory.ui.theme.MGMInventoryTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashscreen = installSplashScreen()
