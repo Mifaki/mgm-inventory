@@ -33,7 +33,7 @@ fun CalendarScreen(
 ) {
     var currentYearMonth by remember { mutableStateOf(YearMonth.from(initialDate)) }
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-    val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     MGMScaffold(
         title = title,

@@ -1,5 +1,6 @@
 package com.brawijaya.mgminventory.ui.borrowform
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,23 +9,33 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.brawijaya.mgminventory.data.service.borrow.local.labItemsData
 import com.brawijaya.mgminventory.ui.borrowform.components.BorrowingDetailsForm
 import com.brawijaya.mgminventory.ui.borrowform.components.PersonalDataForm
 import com.brawijaya.mgminventory.ui.borrowform.viewmodel.BorrowFormViewModel
 import com.brawijaya.mgminventory.ui.components.MGMScaffold
+import com.brawijaya.mgminventory.utlis.Resource
+import kotlinx.coroutines.delay
 
 @Composable
 fun BorrowFormScreen(
     navController: NavHostController,
-    viewModel: BorrowFormViewModel = viewModel()
+    viewModel: BorrowFormViewModel = hiltViewModel()
 ) {
     val formState = viewModel.formState
+    val borrowState by viewModel.borrowSubmitResult.collectAsState()
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val savedStateHandle = currentBackStackEntry?.savedStateHandle
+
+    // Lab Items
+    val labItems = labItemsData
+    val context = LocalContext.current
 
     LaunchedEffect(savedStateHandle) {
         savedStateHandle?.let { handle ->
@@ -93,7 +104,8 @@ fun BorrowFormScreen(
                     pickupDate = formState.pickupDate,
                     onPickupDateChange = { viewModel.updatePickupDate(it) },
                     returnDate = formState.returnDate,
-                    onReturnDateChange = { viewModel.updateReturnDate(it) }
+                    onReturnDateChange = { viewModel.updateReturnDate(it) },
+                    labItems = labItems
                 )
             }
 
@@ -114,7 +126,7 @@ fun BorrowFormScreen(
                 }
             } else {
                 Button(
-                    onClick = { viewModel.submitForm() },
+                    onClick = { viewModel.submitForm(context) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = secondStepComplete,
                     shape = RoundedCornerShape(8.dp),
@@ -123,9 +135,40 @@ fun BorrowFormScreen(
                         disabledContainerColor = Color.Gray
                     )
                 ) {
-                    Text("Ajukan Peminjaman", modifier = Modifier.padding(vertical = 8.dp))
+                    when(borrowState) {
+                        is Resource.Loading -> {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+
+                        else -> {
+                            Text("Ajukan Peminjaman", modifier = Modifier.padding(vertical = 8.dp))
+                        }
+                    }
                 }
             }
+        }
+
+        when(borrowState) {
+            is Resource.Success -> {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(context, "Berhasil menambahkan peminjaman", Toast.LENGTH_LONG).show()
+                    delay(1000)
+                    navController.popBackStack()
+                }
+            }
+
+            is Resource.Error -> {
+                val message = (borrowState as Resource.Error).message
+                LaunchedEffect(message) {
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                }
+            }
+
+            else -> {}
         }
     }
 

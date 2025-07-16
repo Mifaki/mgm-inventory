@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -28,7 +29,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.brawijaya.mgminventory.data.service.borrow.local.ILabItemsData
+import com.brawijaya.mgminventory.domain.model.borrow.LabItem
 import com.brawijaya.mgminventory.ui.navigation.Screen
+import com.brawijaya.mgminventory.utlis.Resource
 
 @Composable
 fun BorrowingDetailsForm(
@@ -42,10 +46,10 @@ fun BorrowingDetailsForm(
     pickupDate: String,
     onPickupDateChange: (String) -> Unit,
     returnDate: String,
-    onReturnDateChange: (String) -> Unit
+    onReturnDateChange: (String) -> Unit,
+    labItems: List<ILabItemsData>
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val items = listOf("Laptop", "Proyektor", "Kamera", "Mikrofon", "Tripod")
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
@@ -69,7 +73,7 @@ fun BorrowingDetailsForm(
                 modifier = Modifier.padding(top = 8.dp)
             ) {
                 OutlinedTextField(
-                    value = selectedItem,
+                    value = labItems.find { it.id == selectedItem }?.name ?: "Select Items",
                     onValueChange = {},
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,11 +100,11 @@ fun BorrowingDetailsForm(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
-                    items.forEach { item ->
+                    labItems.forEach { item ->
                         DropdownMenuItem(
-                            text = { Text(item) },
+                            text = { Text(item.name) },
                             onClick = {
-                                onSelectedItemChange(item)
+                                onSelectedItemChange(item.id)
                                 expanded = false
                             }
                         )

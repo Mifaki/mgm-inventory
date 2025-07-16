@@ -1,13 +1,16 @@
 package com.brawijaya.mgminventory.data.module
 
 import android.content.Context
+import com.brawijaya.mgminventory.data.module.retrofit.TokenInterceptor
 import com.brawijaya.mgminventory.data.service.auth.local.TokenStorage
 import com.brawijaya.mgminventory.data.service.auth.remote.AuthApi
+import com.brawijaya.mgminventory.data.service.borrow.remote.BorrowApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,12 +28,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideAuthInterceptor(tokenStorage: TokenStorage): TokenInterceptor {
+        return TokenInterceptor(tokenStorage)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(authInterceptor: TokenInterceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(logging)
             .build()
     }
@@ -50,6 +60,11 @@ object AppModule {
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApi =
         retrofit.create(AuthApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideBorrowApi(retrofit: Retrofit): BorrowApi =
+        retrofit.create(BorrowApi::class.java)
 
     @Provides
     @Singleton
