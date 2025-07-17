@@ -3,8 +3,13 @@ package com.brawijaya.mgminventory.data.repository.borrow
 import android.util.Log
 import com.brawijaya.mgminventory.data.service.borrow.dto.AddBorrowRequest
 import com.brawijaya.mgminventory.data.service.borrow.dto.AddBorrowResponse
+import com.brawijaya.mgminventory.data.service.borrow.dto.AddReturnItemRequest
+import com.brawijaya.mgminventory.data.service.borrow.dto.AddReturnItemResponse
+import com.brawijaya.mgminventory.data.service.borrow.dto.DataBorrowResponse
 import com.brawijaya.mgminventory.data.service.borrow.dto.LabItemsResponse
+import com.brawijaya.mgminventory.data.service.borrow.local.labItemsData
 import com.brawijaya.mgminventory.data.service.borrow.remote.BorrowApi
+import com.brawijaya.mgminventory.domain.model.borrow.BorrowItem
 import com.brawijaya.mgminventory.domain.model.borrow.LabItem
 import com.brawijaya.mgminventory.utlis.Resource
 import kotlinx.coroutines.flow.Flow
@@ -21,11 +26,16 @@ interface BorrowRepository {
     suspend fun addBorrow(
         request: AddBorrowRequest
     ): Flow<Resource<AddBorrowResponse>>
+
+    suspend fun getBorrowItems(): Flow<Resource<List<BorrowItem>>>
+    suspend fun addReturnItem(
+        request: AddReturnItemRequest
+    ): Flow<Resource<AddReturnItemResponse>>
 }
 
 class BorrowRepositoryImplementation @Inject constructor(
-    private val _api: BorrowApi
-): BorrowRepository {
+    private val _api: BorrowApi,
+) : BorrowRepository {
     override suspend fun getItems(): Flow<Resource<List<LabItem>>> = flow {
         emit(Resource.Loading)
 
@@ -57,19 +67,58 @@ class BorrowRepositoryImplementation @Inject constructor(
                 userKTM = prepareImagePart("userKTM", request.userKTM)
             )
 
-            Log.i("BorrowRepository", "addBorrow Success: $response")
             emit(Resource.Success(response))
         } catch (e: Exception) {
-            Log.e("BorrowRepository", "addBorrow Error: ${e.message}")
             emit(Resource.Error(e.message ?: "Unknown error"))
         }
     }
+
+    override suspend fun getBorrowItems(): Flow<Resource<List<BorrowItem>>> = flow {
+        emit(Resource.Loading)
+
+        try {
+            val response = _api.getBorrowItems()
+            val items = response.data.map { it.toDomain() }
+
+            emit(Resource.Success(items))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.message ?: "Unknown error"))
+        }
+    }
+
+    override suspend fun addReturnItem(request: AddReturnItemRequest): Flow<Resource<AddReturnItemResponse>> =
+        flow {
+            emit(Resource.Loading)
+
+            try {
+                val response = _api.addReturnItem(
+                    itemId = request.itemId.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    borrowDate = request.borrowDate.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    returnDate = request.returnDate.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    damagedItem = prepareImagePart("damagedItem", request.damagedItem)
+                )
+
+                emit(Resource.Success(response))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.message ?: "Unknown error"))
+            }
+        }
 
     private fun LabItemsResponse.toDomain(): LabItem {
         return LabItem(
             id = id,
             name = name,
             quantity = quantity
+        )
+    }
+
+    private fun DataBorrowResponse.toDomain(): BorrowItem {
+        return BorrowItem(
+            id = itemId,
+            itemName = labItemsData.find { it.id == itemId }?.name ?: "Unknown Item",
+            borrowDate = borrowDate,
+            returnDate = returnDate,
+            status = status
         )
     }
 

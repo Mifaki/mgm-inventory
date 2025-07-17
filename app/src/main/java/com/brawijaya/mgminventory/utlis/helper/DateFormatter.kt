@@ -1,14 +1,15 @@
 package com.brawijaya.mgminventory.utlis.helper
 
 import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
-fun String.reformatToDMY(): String {
+fun String.formatIsoToDMY(): String {
     return try {
-        val inputFormat = DateTimeFormatter.ofPattern("dd-mm-yyyy")
-        val outputFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val parsedDate = LocalDate.parse(this, inputFormat)
-        parsedDate.format(outputFormat)
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val date = OffsetDateTime.parse(this, inputFormatter)
+        date.format(outputFormatter)
     } catch (e: Exception) {
         this
     }

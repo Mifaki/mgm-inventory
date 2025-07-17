@@ -11,6 +11,7 @@ import com.brawijaya.mgminventory.domain.onboarding.getOnBoardingItem
 import com.brawijaya.mgminventory.ui.borrow.BorrowScreen
 import com.brawijaya.mgminventory.ui.borrowform.BorrowFormScreen
 import com.brawijaya.mgminventory.ui.calender.CalendarScreen
+import com.brawijaya.mgminventory.ui.history.HistoryScreen
 import com.brawijaya.mgminventory.ui.home.HomeScreen
 import com.brawijaya.mgminventory.ui.itemreturn.ItemReturnScreen
 import com.brawijaya.mgminventory.ui.login.LoginScreen
@@ -33,7 +34,6 @@ sealed class Screen(val route: String) {
     object Punishment : Screen("punishment")
     object Statistic : Screen("statistic")
     object BorrowForm : Screen("borrow_form")
-    object ReturnForm: Screen("return_form")
     object Notification: Screen("notification")
     object Profile: Screen("profile")
     object ProfileDetail: Screen("profile_detail")
@@ -41,6 +41,7 @@ sealed class Screen(val route: String) {
     object Login: Screen("login")
     object Register: Screen("register")
     object Onboarding: Screen("onboarding")
+    object History: Screen("history")
 
     object NotificationDetail: Screen("notification_detail/{type}/{id}") {
         fun createRoute(type: String, id: String): String {
@@ -51,6 +52,14 @@ sealed class Screen(val route: String) {
     object Calendar : Screen("calendar/{title}/{dateType}") {
         fun createRoute(title: String, dateType: String): String {
             return "calendar/$title/$dateType"
+        }
+    }
+
+    object ReturnForm : Screen("return_form/{id}/{name}/{borrowDate}/{returnDate}") {
+        fun createRoute(
+            id: String, name: String, borrowDate: String, returnDate: String
+        ): String {
+            return "return_form/$id/$name/$borrowDate/$returnDate"
         }
     }
 }
@@ -106,10 +115,6 @@ fun AppNavigation(navController: NavHostController, startDestination: String = S
             BorrowFormScreen(navController = navController)
         }
 
-        composable(Screen.ReturnForm.route) {
-            ReturnFormScreen(navController = navController)
-        }
-
         composable(Screen.Notification.route) {
             NotificationScreen(navController = navController)
         }
@@ -134,6 +139,10 @@ fun AppNavigation(navController: NavHostController, startDestination: String = S
             RegisterScreen(navController = navController)
         }
 
+        composable(Screen.History.route) {
+            HistoryScreen(navController = navController)
+        }
+
         composable(
             route = Screen.NotificationDetail.route,
             arguments = listOf(
@@ -148,6 +157,29 @@ fun AppNavigation(navController: NavHostController, startDestination: String = S
                 navController = navController,
                 notificationType = type,
                 notificationId = id
+            )
+        }
+
+        composable(
+            route = Screen.ReturnForm.route,
+            arguments = listOf(
+                navArgument("id") { type = NavType.StringType },
+                navArgument("name") { type = NavType.StringType },
+                navArgument("borrowDate") { type = NavType.StringType },
+                navArgument("returnDate") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            val borrowDate = backStackEntry.arguments?.getString("borrowDate") ?: ""
+            val returnDate = backStackEntry.arguments?.getString("returnDate") ?: ""
+
+            ReturnFormScreen(
+                navController = navController,
+                id = id,
+                name = name,
+                borrowDate = borrowDate,
+                returnDate = returnDate
             )
         }
 

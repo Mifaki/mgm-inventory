@@ -1,6 +1,8 @@
 package com.brawijaya.mgminventory.data.service.borrow.remote
 
 import com.brawijaya.mgminventory.data.service.borrow.dto.AddBorrowResponse
+import com.brawijaya.mgminventory.data.service.borrow.dto.AddReturnItemResponse
+import com.brawijaya.mgminventory.data.service.borrow.dto.GetBorrowResponse
 import com.brawijaya.mgminventory.data.service.borrow.dto.GetItemResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -29,4 +31,16 @@ interface BorrowApi {
         @Part("returnDate") returnDate: RequestBody,
         @Part userKTM: MultipartBody.Part
     ): AddBorrowResponse
+
+    @GET("borrow")
+    suspend fun getBorrowItems(): GetBorrowResponse
+
+    @Multipart
+    @POST("return")
+    suspend fun addReturnItem(
+        @Part("itemId") itemId: RequestBody,
+        @Part("borrowDate") borrowDate: RequestBody,
+        @Part("returnDate") returnDate: RequestBody,
+        @Part damagedItem: MultipartBody.Part
+    ): AddReturnItemResponse
 }
