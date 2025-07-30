@@ -28,10 +28,8 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(horizontal = 24.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            DataStatistikSection(navController)
             FlowSection(navController)
             PunishmentSection(navController)
-            TestimoniSection(navController)
         }
     }
 }

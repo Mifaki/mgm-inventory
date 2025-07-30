@@ -15,17 +15,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.R
 import com.brawijaya.mgminventory.ui.components.MGMScaffold
 import com.brawijaya.mgminventory.ui.profile.components.ProfileMenu
 
 @Composable
-fun ProfileScreen(navController: NavHostController) {
+fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    navController: NavHostController
+) {
     MGMScaffold(
-        title = "Profile",
-        showTopBar = false,
-        navController = navController
+        title = "Profile", showTopBar = false, navController = navController
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -74,18 +76,14 @@ fun ProfileScreen(navController: NavHostController) {
                     .offset(y = (-40).dp)
             ) {
                 Text(
-                    text = "Hanidura Ayatulloh",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Hanidura Ayatulloh", fontSize = 24.sp, fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Mahasiswa",
-                    fontSize = 16.sp,
-                    color = Color.Gray
+                    text = "Mahasiswa", fontSize = 16.sp, color = Color.Gray
                 )
             }
 
-            ProfileMenu(navController = navController)
+            ProfileMenu(navController = navController, viewModel = viewModel)
         }
     }
 }

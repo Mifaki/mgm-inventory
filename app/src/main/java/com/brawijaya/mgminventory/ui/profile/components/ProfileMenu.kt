@@ -1,5 +1,6 @@
 package com.brawijaya.mgminventory.ui.profile.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,9 +34,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.brawijaya.mgminventory.R
 import com.brawijaya.mgminventory.ui.navigation.Screen
+import com.brawijaya.mgminventory.ui.profile.ProfileViewModel
 
 @Composable
-fun ProfileMenu(navController: NavHostController) {
+fun ProfileMenu(navController: NavHostController, viewModel: ProfileViewModel) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,7 +94,13 @@ fun ProfileMenu(navController: NavHostController) {
                 subtitle = "Further secure your account for safety",
                 showToggle = false,
                 onClick = {
-                    // Handle logout
+                    viewModel.logout()
+                    Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

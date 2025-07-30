@@ -25,6 +25,8 @@ interface AuthRepository {
         nim: String,
         password: String
     ): Flow<Resource<User>>
+
+    suspend fun logout()
 }
 
 class AuthRepositoryImplementation @Inject constructor(
@@ -68,6 +70,10 @@ class AuthRepositoryImplementation @Inject constructor(
             emit(Resource.Error(e.toString() ?: "Register: Something Went Wrong"))
             Log.e("Register", e.toString())
         }
+    }
+
+    override suspend fun logout() {
+        _tokenStorage.clearToken()
     }
 
     private fun AuthUserResponse.toDomain(): User {
